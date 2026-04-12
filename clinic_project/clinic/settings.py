@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-f5-o$-ra6t9foqwemzp(+y40dkt1*cc^%mf2z8bstvz%0nyt2q
 DEBUG = True
 
 ALLOWED_HOSTS = []
+AUTH_USER_MODEL = 'accounts.User'
 
 
 # Application definition
@@ -37,6 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'clinic_project',
+    'frontend',
+    'accounts', 
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +60,7 @@ ROOT_URLCONF = 'clinic.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "frontend" /  "template"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,7 +74,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'clinic.wsgi.application'
 
-
+CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:8000/"]
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
