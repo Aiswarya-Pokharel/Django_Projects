@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class FrontendConfig(AppConfig):
+class CrmAppConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'frontend'
+    name = 'crm_app'
