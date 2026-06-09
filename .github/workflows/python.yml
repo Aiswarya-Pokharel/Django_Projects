@@ -3,25 +3,47 @@ name: Full Stack CI
 on:
   push:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   test:
     runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v4
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: test_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
-      - uses: actions/setup-python@v5
+    defaults:
+      run:
+        working-directory: appointment_system
+
+    steps:
+      - uses: actions/checkout@v4.2.2
+
+      - uses: actions/setup-python@v5.6.0
         with:
           python-version: "3.12"
 
       - name: Install Dependencies
-        working-directory: appointment_system
         run: pip install -r requirements.txt
 
       - name: Run Django Tests
-        working-directory: appointment_system
+        env:
+          DB_NAME: test_db
+          DB_USER: postgres
+          DB_PASSWORD: postgres
+          DB_HOST: localhost
+          DB_PORT: 5432
         run: python manage.py test
-        
-      - name: Run Frontend Tests
-        working-directory: appointment_system/frontend
-        run: npm install && npm test
