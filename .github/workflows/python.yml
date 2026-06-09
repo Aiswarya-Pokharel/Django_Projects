@@ -7,13 +7,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: appointment_system
-        working-directory: clinic_project
-        working-directory: students
-
-
     steps:
       - uses: actions/checkout@v4
 
@@ -22,7 +15,13 @@ jobs:
           python-version: "3.12"
 
       - name: Install Dependencies
+        working-directory: appointment_system
         run: pip install -r requirements.txt
 
       - name: Run Django Tests
+        working-directory: appointment_system
         run: python manage.py test
+        
+      - name: Run Frontend Tests
+        working-directory: appointment_system/frontend
+        run: npm install && npm test
